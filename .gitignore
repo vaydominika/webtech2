@@ -5,11 +5,14 @@
 /tmp
 /out-tsc
 /bazel-out
+/.angular/cache
 
 # Node
-/node_modules
-npm-debug.log
-yarn-error.log
+**/node_modules/
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+/connect.lock
 
 # IDEs and editors
 .idea/
@@ -38,6 +41,9 @@ yarn-error.log
 testem.log
 /typings
 __screenshots__/
+
+# Environment variables
+**/.env
 
 # System files
 .DS_Store
