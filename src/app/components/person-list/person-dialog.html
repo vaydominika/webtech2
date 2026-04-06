@@ -1,0 +1,57 @@
+<h2 mat-dialog-title class="text-3xl font-black text-black! tracking-tighter uppercase px-8! pt-8!">
+  {{ isEdit ? 'Személy adatai' : 'Új személy hozzáadása' }}
+</h2>
+
+<mat-dialog-content class="p-8!">
+  <form [formGroup]="personForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Név -->
+    <mat-form-field appearance="outline" class="col-span-full">
+      <mat-label class="uppercase">Név</mat-label>
+      <input matInput formControlName="name" placeholder="pl. Kiss János">
+      <mat-error *ngIf="personForm.get('name')?.hasError('required')">A név megadása kötelező</mat-error>
+    </mat-form-field>
+
+    <!-- Telefon -->
+    <mat-form-field appearance="outline">
+      <mat-label class="uppercase">Telefonszám</mat-label>
+      <input matInput formControlName="phoneNumber" placeholder="+36 ...">
+      <mat-icon matSuffix class="text-gray-300">phone</mat-icon>
+      <mat-error *ngIf="personForm.get('phoneNumber')?.hasError('required')">A telefonszám kötelező</mat-error>
+    </mat-form-field>
+
+    <!-- Státusz -->
+    <mat-form-field appearance="outline">
+      <mat-label class="uppercase">Státusz</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="ideiglenes">Ideiglenes befogadó</mat-option>
+        <mat-option value="végleges">Végleges gazdi</mat-option>
+        <mat-option value="gondozó">Gondozó / Önkéntes</mat-option>
+        <mat-option value="érdeklődő">Érdeklődő</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Lakhely -->
+    <mat-form-field appearance="outline" class="col-span-full">
+      <mat-label class="uppercase">Lakhely / Cím</mat-label>
+      <input matInput formControlName="address" placeholder="pl. 1024 Budapest, Példa utca 1.">
+      <mat-icon matSuffix class="text-gray-300">place</mat-icon>
+      <mat-error *ngIf="personForm.get('address')?.hasError('required')">A cím megadása kötelező</mat-error>
+    </mat-form-field>
+
+    <!-- Megjegyzések -->
+    <mat-form-field appearance="outline" class="col-span-full">
+      <mat-label class="uppercase">Megjegyzések</mat-label>
+      <textarea matInput formControlName="notes" placeholder="Speciális igények, korábbi tapasztalat..." rows="3"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="pb-8! px-8! gap-4!">
+  <button mat-button (click)="dialogRef.close()" class="p-6! text-black! hover:bg-gray-50 uppercase font-black tracking-widest text-[11px] rounded-[4px]!">
+    Mégse
+  </button>
+  <button mat-flat-button [disabled]="personForm.invalid" (click)="onSubmit()" 
+    class="p-6! bg-black! text-white! hover:bg-pastel-pink! hover:text-black! disabled:bg-gray-200! disabled:text-gray-400! transition-all font-black uppercase tracking-widest text-[11px] rounded-[4px]!">
+    {{ isEdit ? 'Mentés' : 'Hozzáadás' }}
+  </button>
+</mat-dialog-actions>

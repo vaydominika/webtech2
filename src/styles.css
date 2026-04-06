@@ -1,3 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+@theme {
+  --color-pastel-pink: #FFD1DC;
+  --color-primary: #000000;
+  --color-accent: #FFD1DC;
+}
+
+/* Global font */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Fix Material Dialog Container rounding */
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 4px !important;
+}
+
+/* Fix Material Notched Outline to be 4px rounded instead of pill-shaped */
+.mdc-notched-outline__leading {
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.mdc-notched-outline__trailing {
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+}
+
+.mdc-notched-outline__notch {
+  border-radius: 0 !important;
+}

@@ -1,0 +1,79 @@
+<div class="space-y-8">
+  <div class="flex justify-between items-center bg-white p-8 border border-black/5 shadow-sm rounded-[4px]">
+    <div>
+      <h1 class="text-3xl font-black text-black! tracking-tighter uppercase">Macskák</h1>
+      <p class="text-gray-400 text-sm font-medium">Nyilvántartás és kezelés</p>
+    </div>
+    <button mat-flat-button 
+      (click)="openAddCatDialog()"
+      class="p-6! bg-black! text-white! border-none hover:bg-pastel-pink! hover:text-black! rounded-[4px]!">
+      <mat-icon class="mr-2">add</mat-icon>
+      Új lakó
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    @for (cat of cats(); track cat._id) {
+      <mat-card class="bg-white! border border-black/10 shadow-none hover:border-pastel-pink! transition-all duration-300 group overflow-hidden rounded-[4px]!">
+        <div class="h-64 relative overflow-hidden bg-gray-50 flex items-center justify-center">
+          @if (cat.imageUrl) {
+            <img mat-card-image [src]="cat.imageUrl" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+          } @else {
+            <mat-icon class="scale-[3] text-pastel-pink opacity-50">pets</mat-icon>
+          }
+          
+          <div class="absolute top-4 right-4">
+            <span class="px-4 py-1.5 bg-black! text-white! text-[10px] font-black uppercase tracking-[0.2em] rounded-[4px]!">
+              {{ cat.status }}
+            </span>
+          </div>
+        </div>
+
+        <mat-card-content class="p-8">
+          <div class="flex justify-between items-start mt-4">
+            <div>
+              <h2 class="text-2xl font-black text-black! tracking-tight leading-none mb-1">{{ cat.name }}</h2>
+              <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ cat.breed || 'Ismeretlen fajta' }}</p>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <span class="text-[10px] font-black uppercase tracking-widest px-3 py-1 bg-pastel-pink! text-black! rounded-[4px]!">
+                {{ cat.gender }}
+              </span>
+              <span class="text-[9px] font-bold text-gray-500 uppercase tracking-tighter">
+                ~{{ cat.estimatedAge }} éves
+              </span>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <p class="text-sm text-gray-500 font-medium leading-relaxed italic line-clamp-2">
+              {{ cat.description.join(', ') }}
+            </p>
+          </div>
+          <div class="flex items-center text-xs font-bold text-gray-400 gap-2 uppercase tracking-wider mb-2">
+            <mat-icon class="scale-75 text-gray-300">calendar_today</mat-icon>
+            <span>{{ cat.arrivalDate | date:'yyyy.MM.dd' }}</span>
+          </div>
+          <div class="flex gap-3 justify-end">
+            <button mat-icon-button 
+              (click)="openEditCatDialog(cat)"
+              class="w-12 h-12! bg-gray-50 text-black! hover:bg-pastel-pink! transition-colors rounded-[4px]!">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button 
+              (click)="deleteCat(cat._id!)" 
+              class="w-12 h-12! bg-gray-50 text-red-500! hover:bg-black! hover:text-white! transition-colors rounded-[4px]!">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      <div class="col-span-full py-32 text-center bg-gray-50 border-2 border-dashed border-gray-200 rounded-[4px]">
+        <mat-icon class="scale-[2.5] text-gray-200 mb-8">info</mat-icon>
+        <p class="text-2xl text-black! font-black uppercase tracking-widest">Nincsenek cicák</p>
+        <p class="text-gray-400 text-sm mt-2 font-medium">Hozzáadáshoz kattints az Új lakó gombra.</p>
+      </div>
+    }
+  </div>
+</div>

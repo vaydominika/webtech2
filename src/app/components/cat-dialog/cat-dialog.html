@@ -1,0 +1,85 @@
+<h2 mat-dialog-title class="text-3xl font-black text-black! tracking-tighter uppercase px-8! pt-8!">
+  {{ isEdit ? 'Cica Szerkesztése' : 'Új Cica Hozzáadása' }}
+</h2>
+
+<mat-dialog-content class="p-8!">
+  <form [formGroup]="catForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Név -->
+    <mat-form-field appearance="outline" class="col-span-full">
+      <mat-label class="uppercase">Cica neve</mat-label>
+      <input matInput formControlName="name" placeholder="pl. Cirmi">
+      <mat-error *ngIf="catForm.get('name')?.hasError('required')">A név megadása kötelező</mat-error>
+    </mat-form-field>
+
+    <!-- Becsült kor -->
+    <mat-form-field appearance="outline">
+      <mat-label class="uppercase">Becsült kor (év)</mat-label>
+      <input matInput type="number" formControlName="estimatedAge" min="0">
+    </mat-form-field>
+
+    <!-- Nem -->
+    <mat-form-field appearance="outline">
+      <mat-label class="uppercase">Neme</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="hím">Hím</mat-option>
+        <mat-option value="nőstény">Nőstény</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Szín -->
+    <mat-form-field appearance="outline">
+      <mat-label class="uppercase">Szín</mat-label>
+      <input matInput formControlName="color" placeholder="pl. Tricolor">
+    </mat-form-field>
+
+    <!-- Fajta -->
+    <mat-form-field appearance="outline">
+      <mat-label class="uppercase">Fajta</mat-label>
+      <input matInput formControlName="breed" placeholder="pl. Europai rövid szőrű">
+    </mat-form-field>
+
+    <!-- Bekerülés dátuma -->
+    <mat-form-field appearance="outline" class="col-span-full">
+      <mat-label class="uppercase">Bekerülés dátuma</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="arrivalDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Státusz -->
+    <mat-form-field appearance="outline" class="col-span-full">
+      <mat-label class="uppercase">Státusz</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="örökbefogadható">Örökbefogadható</mat-option>
+        <mat-option value="örökbeadva">Örökbeadva</mat-option>
+        <mat-option value="kezelés alatt">Kezelés alatt</mat-option>
+        <mat-option value="karantén">Karantén</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Jellemzés (chips) -->
+    <div class="col-span-full">
+      <p class="text-[10px] font-black uppercase tracking-widest text-black! mb-3 ml-1">Jellemzés (pl. félős, barátságos)</p>
+      <div class="flex flex-wrap gap-2">
+        @for (trait of ['barátságos', 'félős', 'játékos', 'nyugodt', 'domináns']; track trait) {
+          <button type="button" 
+            (click)="toggleDescription(trait)"
+            [class]="isTraitSelected(trait) ? 'bg-black! text-white!' : 'bg-gray-50 text-gray-500 hover:bg-pastel-pink! hover:text-black!'"
+            class="px-4 py-2 text-[10px] font-black uppercase tracking-widest border border-black/5 transition-all rounded-[4px]!">
+            {{ trait }}
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="gap-2">
+  <button mat-button (click)="dialogRef.close()" class="p-6! hover:bg-gray-50 rounded-[4px]!">
+    Mégse
+  </button>
+  <button mat-flat-button [disabled]="catForm.invalid" (click)="onSubmit()" 
+    class="p-6! rounded-[4px]! bg-black! text-white! hover:bg-pastel-pink! hover:text-black! disabled:bg-gray-200! disabled:text-gray-400!">
+    {{ isEdit ? 'Mentés' : 'Hozzáadás' }}
+  </button>
+</mat-dialog-actions>
