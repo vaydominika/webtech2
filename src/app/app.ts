@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SidebarComponent } from './components/sidebar/sidebar';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -24,5 +25,6 @@ import { SidebarComponent } from './components/sidebar/sidebar';
   styleUrl: './app.css'
 })
 export class App {
+  authService = inject(AuthService);
   protected readonly title = signal('Menhely kezelő rendszer');
 }

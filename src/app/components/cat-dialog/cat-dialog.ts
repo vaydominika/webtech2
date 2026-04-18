@@ -42,7 +42,7 @@ export class CatDialogComponent {
     this.selectedTraits = data?.description || [];
     
     this.catForm = this.fb.group({
-      name: [data?.name || '', Validators.required],
+      name: [data?.name || '', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],
       estimatedAge: [data?.estimatedAge || 0],
       gender: [data?.gender || 'hím', Validators.required],
       color: [data?.color || '', Validators.required],

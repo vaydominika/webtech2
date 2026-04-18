@@ -24,66 +24,74 @@
     </div>
   </div>
 
-  <!-- Táblázat konténer -->
-  <div class="bg-white border border-black/10 overflow-hidden shadow-none rounded-[4px]!">
-    <table mat-table [dataSource]="dataSource" matSort class="w-full">
-
-      <!-- Név oszlop -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Név</th>
-        <td mat-cell *matCellDef="let person" class="py-6">
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 bg-pastel-pink! flex items-center justify-center text-black! font-black text-xs rounded-[4px]!">
-              {{ person.name.charAt(0) }}
+  <!-- Lista tartalom -->
+  @if (people().length > 0) {
+    <div class="bg-white border border-black/10 overflow-hidden shadow-none rounded-[4px]!">
+      <table mat-table [dataSource]="dataSource" matSort class="w-full">
+  
+        <!-- Név oszlop -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Név</th>
+          <td mat-cell *matCellDef="let person" class="py-6">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-pastel-pink! flex items-center justify-center text-black! font-black text-xs rounded-[4px]!">
+                {{ person.name.charAt(0) }}
+              </div>
+              <span class="font-bold text-black!">{{ person.name }}</span>
             </div>
-            <span class="font-bold text-black!">{{ person.name }}</span>
-          </div>
-        </td>
-      </ng-container>
-
-      <!-- Státusz oszlop -->
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Státusz</th>
-        <td mat-cell *matCellDef="let person">
-          <span class="px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] border border-black/5 rounded-[4px]!" 
-            [ngClass]="{
-              'bg-black! text-white!': person.status === 'gondozó',
-              'bg-pastel-pink! text-black!': person.status === 'végleges',
-              'bg-white! text-black! border-black!': person.status === 'ideiglenes',
-              'bg-gray-100! text-gray-500!': person.status === 'érdeklődő'
-            }">
-            {{ person.status }}
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- Telefon oszlop -->
-      <ng-container matColumnDef="phoneNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Telefonszám</th>
-        <td mat-cell *matCellDef="let person" class="text-black! font-medium">{{ person.phoneNumber }}</td>
-      </ng-container>
-
-      <!-- Lakhely oszlop -->
-      <ng-container matColumnDef="address">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Lakhely</th>
-        <td mat-cell *matCellDef="let person" class="text-gray-500 font-medium max-w-xs truncate">{{ person.address }}</td>
-      </ng-container>
-
-      <!-- Műveletek oszlop -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50 text-right pr-12">Műveletek</th>
-        <td mat-cell *matCellDef="let person" class="text-right pr-8">
-          <button mat-icon-button (click)="openEditPersonDialog(person)" class="text-black! hover:bg-pastel-pink! transition-colors rounded-[4px]! mr-2" matTooltip="Szerkesztés">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="deletePerson(person._id)" class="text-red-500 hover:bg-black! hover:text-white! transition-colors rounded-[4px]!" matTooltip="Törlés">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors"></tr>
-    </table>
-  </div>
+          </td>
+        </ng-container>
+  
+        <!-- Státusz oszlop -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Státusz</th>
+          <td mat-cell *matCellDef="let person">
+            <span class="px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] border border-black/5 rounded-[4px]!" 
+              [ngClass]="{
+                'bg-black! text-white!': person.status === 'gondozó',
+                'bg-pastel-pink! text-black!': person.status === 'végleges',
+                'bg-white! text-black! border-black!': person.status === 'ideiglenes',
+                'bg-gray-100! text-gray-500!': person.status === 'érdeklődő'
+              }">
+              {{ person.status }}
+            </span>
+          </td>
+        </ng-container>
+  
+        <!-- Telefon oszlop -->
+        <ng-container matColumnDef="phoneNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Telefonszám</th>
+          <td mat-cell *matCellDef="let person" class="text-black! font-medium">{{ person.phoneNumber }}</td>
+        </ng-container>
+  
+        <!-- Lakhely oszlop -->
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Lakhely</th>
+          <td mat-cell *matCellDef="let person" class="text-gray-500 font-medium max-w-xs truncate">{{ person.address }}</td>
+        </ng-container>
+  
+        <!-- Műveletek oszlop -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50 text-right pr-12">Műveletek</th>
+          <td mat-cell *matCellDef="let person" class="text-right pr-8">
+            <button mat-icon-button (click)="openEditPersonDialog(person)" class="text-black! hover:bg-pastel-pink! transition-colors rounded-[4px]! mr-2" matTooltip="Szerkesztés">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deletePerson(person._id)" class="text-red-500 hover:bg-black! hover:text-white! transition-colors rounded-[4px]!" matTooltip="Törlés">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors"></tr>
+      </table>
+    </div>
+  } @else {
+    <div class="py-32 text-center bg-gray-50 border-2 border-dashed border-gray-200 rounded-[4px]">
+      <mat-icon class="scale-[2.5] text-gray-200 mb-8">info</mat-icon>
+      <p class="text-2xl text-black! font-black uppercase tracking-widest">Nincsenek személyek</p>
+      <p class="text-gray-400 text-sm mt-2 font-medium">Hozzáadáshoz kattints az Új személy gombra.</p>
+    </div>
+  }
 </div>

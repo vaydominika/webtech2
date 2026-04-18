@@ -3,6 +3,7 @@ import { Schema, model, Document } from 'mongoose';
 export interface IPerson extends Document {
   name: string;
   phoneNumber: string;
+  email?: string;
   address: string;
   status: 'ideiglenes' | 'végleges' | 'gondozó' | 'érdeklődő';
   notes?: string;
@@ -10,8 +11,36 @@ export interface IPerson extends Document {
 }
 
 const personSchema = new Schema<IPerson>({
-  name: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
+  name: { 
+    type: String, 
+    required: true,
+    validate: {
+      validator: function(v: string) {
+        return /^[^0-9]*$/.test(v);
+      },
+      message: 'A név nem tartalmazhat számokat.'
+    }
+  },
+  phoneNumber: { 
+    type: String, 
+    required: true,
+    validate: {
+      validator: function(v: string) {
+        return /^\+36\s?[0-9\s-]{8,12}$/.test(v);
+      },
+      message: 'Kizárólag magyar formátumú telefonszám fogadható el (+36 ...).'
+    }
+  },
+  email: {
+    type: String,
+    validate: {
+      validator: function(v: string) {
+        if (!v) return true; // Opvionális
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      },
+      message: 'Érvénytelen email cím formátum.'
+    }
+  },
   address: { type: String, required: true },
   status: { 
     type: String, 

@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import catRoutes from './routes/catRoutes.js';
 import personRoutes from './routes/personRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use('/api/cats', catRoutes);
 app.use('/api/people', personRoutes);
+app.use('/api/auth', authRoutes);
 
 const DATABASE_URL = process.env.DATABASE_URL;
 

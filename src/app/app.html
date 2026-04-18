@@ -1,26 +1,26 @@
 <mat-sidenav-container class="h-screen bg-white!">
-  <!-- Sidenav (Oldalsáv) -->
-  <mat-sidenav mode="side" opened class="w-60! border-none shadow-none bg-black! overflow-x-hidden! [&_.mat-drawer-inner-container]:overflow-x-hidden!">
-    <app-sidebar class="h-full block"></app-sidebar>
-  </mat-sidenav>
+  @if (authService.isLoggedIn()) {
+    <mat-sidenav mode="side" opened class="w-60! border-none shadow-none bg-black! overflow-x-hidden! [&_.mat-drawer-inner-container]:overflow-x-hidden!">
+      <app-sidebar class="h-full block"></app-sidebar>
+    </mat-sidenav>
+  }
 
-  <!-- Fő Tartalom -->
   <mat-sidenav-content class="flex flex-col bg-white!">
-    <!-- Fejléc (Toolbar) -->
-    <mat-toolbar class="bg-white! border-b border-gray-100 flex justify-between px-8 h-20 shadow-none sticky top-0 z-10">
-      <span class="text-2xl font-black text-black! tracking-tight">{{ title() }}</span>
-      
-      <div class="flex items-center gap-4">
-        <div class="h-8 w-px bg-gray-100 ml-2"></div>
-        <button mat-button class="text-black! font-bold hover:bg-pastel-pink! transition-colors rounded-[4px]!">
-          Kijelentkezés
-        </button>
-      </div>
-    </mat-toolbar>
+    @if (authService.isLoggedIn()) {
+      <mat-toolbar class="bg-white! border-b border-gray-100 flex justify-between px-8 h-20 shadow-none sticky top-0 z-10">
+        <span class="text-2xl font-black text-black! tracking-tight">{{ title() }}</span>
+        
+        <div class="flex items-center gap-4">
+          <div class="h-8 w-px bg-gray-100 ml-2"></div>
+          <button mat-button (click)="authService.logout()" class="text-black! font-bold hover:bg-pastel-pink! transition-colors rounded-[4px]!">
+            Kijelentkezés
+          </button>
+        </div>
+      </mat-toolbar>
+    }
 
-    <!-- Dinamikus tartalom (Router Outlet) -->
     <main class="flex-1 p-8 overflow-y-auto bg-white!">
-      <div class="max-w-7xl mx-auto">
+      <div [class.max-w-7xl]="authService.isLoggedIn()" [class.mx-auto]="authService.isLoggedIn()">
         <router-outlet></router-outlet>
       </div>
     </main>

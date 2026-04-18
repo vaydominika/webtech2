@@ -35,8 +35,9 @@ export class PersonDialogComponent {
   ) {
     this.isEdit = !!data;
     this.personForm = this.fb.group({
-      name: [data?.name || '', Validators.required],
-      phoneNumber: [data?.phoneNumber || '', Validators.required],
+      name: [data?.name || '', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],
+      phoneNumber: [data?.phoneNumber || '+36 ', [Validators.required, Validators.pattern(/^\+36\s?[0-9\s-]{8,12}$/)]],
+      email: [data?.email || '', [Validators.email, Validators.pattern(/^(|[^\s@]+@[^\s@]+\.[^\s@]+)$/)]],
       address: [data?.address || '', Validators.required],
       status: [data?.status || 'érdeklődő', Validators.required],
       notes: [data?.notes || '']

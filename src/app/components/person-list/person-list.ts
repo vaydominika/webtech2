@@ -33,6 +33,7 @@ export class PersonListComponent implements OnInit {
   
   displayedColumns: string[] = ['name', 'status', 'phoneNumber', 'address', 'actions'];
   dataSource = new MatTableDataSource<Person>([]);
+  protected readonly people = signal<Person[]>([]);
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -42,6 +43,7 @@ export class PersonListComponent implements OnInit {
 
   loadPeople() {
     this.personService.getPeople().subscribe(data => {
+      this.people.set(data);
       this.dataSource.data = data;
       this.dataSource.sort = this.sort;
     });

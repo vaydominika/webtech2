@@ -9,6 +9,7 @@
       <mat-label class="uppercase">Név</mat-label>
       <input matInput formControlName="name" placeholder="pl. Kiss János">
       <mat-error *ngIf="personForm.get('name')?.hasError('required')">A név megadása kötelező</mat-error>
+      <mat-error *ngIf="personForm.get('name')?.hasError('pattern')">A név nem tartalmazhat számokat</mat-error>
     </mat-form-field>
 
     <!-- Telefon -->
@@ -17,6 +18,17 @@
       <input matInput formControlName="phoneNumber" placeholder="+36 ...">
       <mat-icon matSuffix class="text-gray-300">phone</mat-icon>
       <mat-error *ngIf="personForm.get('phoneNumber')?.hasError('required')">A telefonszám kötelező</mat-error>
+      <mat-error *ngIf="personForm.get('phoneNumber')?.hasError('pattern')">Kizárólag magyar formátum fogadható el (+36 ...)</mat-error>
+    </mat-form-field>
+
+    <!-- Email -->
+    <mat-form-field appearance="outline">
+      <mat-label class="uppercase">Email cím</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="pelda@email.hu">
+      <mat-icon matSuffix class="text-gray-300">mail</mat-icon>
+      <mat-error *ngIf="personForm.get('email')?.hasError('email') || personForm.get('email')?.hasError('pattern')">
+        Érvénytelen email formátum
+      </mat-error>
     </mat-form-field>
 
     <!-- Státusz -->

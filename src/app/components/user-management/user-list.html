@@ -1,0 +1,54 @@
+<div class="space-y-8">
+  <div class="flex justify-between items-center bg-white p-8 border border-black/5 shadow-sm rounded-[4px]">
+    <div>
+      <h1 class="text-3xl font-black text-black! tracking-tighter uppercase">Felhasználók</h1>
+      <p class="text-gray-400 text-sm font-medium">Rendszerfelhasználók és jogosultságok kezelése</p>
+    </div>
+  </div>
+
+  <div class="bg-white border border-black/10 overflow-hidden shadow-none rounded-[4px]!">
+    <table mat-table [dataSource]="dataSource" class="w-full">
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Felhasználónév</th>
+        <td mat-cell *matCellDef="let user" class="py-6">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-black! flex items-center justify-center text-pastel-pink! font-black text-xs rounded-[4px]!">
+              {{ user.username.charAt(0).toUpperCase() }}
+            </div>
+            <span class="font-bold text-black!">{{ user.username }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Szerepkör</th>
+        <td mat-cell *matCellDef="let user">
+          <span class="px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] rounded-[4px]!" 
+            [ngClass]="user.role === 'admin' ? 'bg-black! text-white!' : 'bg-pastel-pink! text-black!'">
+            {{ user.role }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50">Regisztráció</th>
+        <td mat-cell *matCellDef="let user" class="text-gray-500 font-medium">{{ user.createdAt | date:'yyyy.MM.dd HH:mm' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-black! font-black py-6 uppercase text-[11px] tracking-widest bg-gray-50/50 text-right pr-12">Műveletek</th>
+        <td mat-cell *matCellDef="let user" class="text-right pr-8">
+          <button mat-icon-button (click)="toggleRole(user)" class="text-black! hover:bg-pastel-pink! transition-colors rounded-[4px]! mr-2" matTooltip="Szerepkör váltása">
+            <mat-icon>admin_panel_settings</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteUser(user._id)" class="text-red-500 hover:bg-black! hover:text-white! transition-colors rounded-[4px]!" matTooltip="Törlés">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="border-b border-gray-50 hover:bg-gray-50/30 transition-colors"></tr>
+    </table>
+  </div>
+</div>

@@ -6,6 +6,7 @@ export interface Person {
   _id?: string;
   name: string;
   phoneNumber: string;
+  email?: string;
   address: string;
   status: 'ideiglenes' | 'végleges' | 'gondozó' | 'érdeklődő';
   notes?: string;

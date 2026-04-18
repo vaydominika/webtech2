@@ -32,7 +32,16 @@ const medicalSchema = new Schema<IMedicalData>({
 }, { _id: false });
 
 const catSchema = new Schema<ICat>({
-  name: { type: String, required: true },
+  name: { 
+    type: String, 
+    required: true,
+    validate: {
+      validator: function(v: string) {
+        return /^[^0-9]*$/.test(v);
+      },
+      message: 'A név nem tartalmazhat számokat.'
+    }
+  },
   estimatedAge: Number,
   gender: { type: String, enum: ['hím', 'nőstény'], required: true },
   color: { type: String, required: true },

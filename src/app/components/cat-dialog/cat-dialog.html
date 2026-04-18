@@ -9,6 +9,7 @@
       <mat-label class="uppercase">Cica neve</mat-label>
       <input matInput formControlName="name" placeholder="pl. Cirmi">
       <mat-error *ngIf="catForm.get('name')?.hasError('required')">A név megadása kötelező</mat-error>
+      <mat-error *ngIf="catForm.get('name')?.hasError('pattern')">A név nem tartalmazhat számokat</mat-error>
     </mat-form-field>
 
     <!-- Becsült kor -->

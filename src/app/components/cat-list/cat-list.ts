@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,7 +20,19 @@ export class CatListComponent implements OnInit {
   private catService = inject(CatService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  
   protected readonly cats = signal<Cat[]>([]);
+  protected readonly searchQuery = signal<string>('');
+
+  protected readonly filteredCats = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+    if (!query) return this.cats();
+
+    return this.cats().filter(cat => 
+      cat.name.toLowerCase().includes(query) || 
+      (cat.breed && cat.breed.toLowerCase().includes(query))
+    );
+  });
 
   ngOnInit() {
     this.loadCats();
@@ -30,6 +42,11 @@ export class CatListComponent implements OnInit {
     this.catService.getCats().subscribe(data => {
       this.cats.set(data);
     });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.searchQuery.set(filterValue);
   }
 
   openAddCatDialog() {

@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { Person } from '../models/Person.js';
+import { authenticate } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', authenticate, async (req: Request, res: Response) => {
   try {
     const people = await Person.find().populate('assignedCats');
     res.json(people);
@@ -12,7 +13,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authenticate, async (req: Request, res: Response) => {
   const person = new Person(req.body);
   try {
     const newPerson = await person.save();
@@ -22,7 +23,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id', authenticate, async (req: Request, res: Response) => {
   try {
     const updatedPerson = await Person.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updatedPerson);
@@ -31,7 +32,7 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', authenticate, async (req: Request, res: Response) => {
   try {
     await Person.findByIdAndDelete(req.params.id);
     res.json({ message: 'Személy törölve' });

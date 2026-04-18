@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { Cat } from '../models/Cat.js';
+import { authenticate } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', authenticate, async (req: Request, res: Response) => {
   try {
     const cats = await Cat.find();
     res.json(cats);
@@ -12,7 +13,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authenticate, async (req: Request, res: Response) => {
   const cat = new Cat(req.body);
   try {
     const newCat = await cat.save();
@@ -22,7 +23,7 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', authenticate, async (req: Request, res: Response) => {
   try {
     const cat = await Cat.findById(req.params.id);
     if (!cat) return res.status(404).json({ message: 'A macska nem található' });
@@ -32,7 +33,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id', authenticate, async (req: Request, res: Response) => {
   try {
     const updatedCat = await Cat.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updatedCat);
@@ -41,7 +42,7 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', authenticate, async (req: Request, res: Response) => {
   try {
     await Cat.findByIdAndDelete(req.params.id);
     res.json({ message: 'Macska törölve' });
