@@ -43,7 +43,7 @@ router.patch('/profile', authenticate, async (req: any, res) => {
 
 router.post('/register', async (req, res) => {
   try {
-    const { username, password, role } = req.body;
+    const { username, password } = req.body;
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
@@ -53,8 +53,7 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       username,
-      password: hashedPassword,
-      role: role || 'user'
+      password: hashedPassword
     });
 
     await user.save();

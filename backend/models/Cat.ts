@@ -21,6 +21,7 @@ export interface ICat extends Document {
   status: 'örökbefogadható' | 'örökbeadva' | 'kezelés alatt' | 'karantén';
   location?: string;
   medicalInfo: IMedicalData;
+  user: Schema.Types.ObjectId; // Ref: User
 }
 
 const medicalSchema = new Schema<IMedicalData>({
@@ -56,7 +57,8 @@ const catSchema = new Schema<ICat>({
     default: 'örökbefogadható'
   },
   location: String,
-  medicalInfo: { type: medicalSchema, default: () => ({ isNeutered: false }) }
+  medicalInfo: { type: medicalSchema, default: () => ({ isNeutered: false }) },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 
 export const Cat = model<ICat>('Cat', catSchema);

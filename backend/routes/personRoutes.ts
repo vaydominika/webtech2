@@ -1,20 +1,23 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { Person } from '../models/Person.js';
-import { authenticate } from '../middleware/auth.js';
+import { authenticate, AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/', authenticate, async (req: Request, res: Response) => {
+router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const people = await Person.find().populate('assignedCats');
+    const people = await Person.find({ user: req.user?.id } as any).populate('assignedCats');
     res.json(people);
   } catch (err: any) {
     res.status(500).json({ message: err.message });
   }
 });
 
-router.post('/', authenticate, async (req: Request, res: Response) => {
-  const person = new Person(req.body);
+router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
+  const person = new Person({
+    ...req.body,
+    user: req.user?.id
+  });
   try {
     const newPerson = await person.save();
     res.status(201).json(newPerson);
@@ -23,18 +26,24 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
   }
 });
 
-router.patch('/:id', authenticate, async (req: Request, res: Response) => {
+router.patch('/:id', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    const updatedPerson = await Person.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedPerson = await Person.findOneAndUpdate(
+      { _id: req.params.id, user: req.user?.id } as any,
+      req.body,
+      { new: true }
+    );
+    if (!updatedPerson) return res.status(404).json({ message: 'A személy nem található vagy nincs hozzáférése' });
     res.json(updatedPerson);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
 });
 
-router.delete('/:id', authenticate, async (req: Request, res: Response) => {
+router.delete('/:id', authenticate, async (req: AuthRequest, res: Response) => {
   try {
-    await Person.findByIdAndDelete(req.params.id);
+    const deletedPerson = await Person.findOneAndDelete({ _id: req.params.id, user: req.user?.id } as any);
+    if (!deletedPerson) return res.status(404).json({ message: 'A személy nem található vagy nincs hozzáférése' });
     res.json({ message: 'Személy törölve' });
   } catch (err: any) {
     res.status(500).json({ message: err.message });

@@ -8,6 +8,7 @@ export interface IPerson extends Document {
   status: 'ideiglenes' | 'végleges' | 'gondozó' | 'érdeklődő';
   notes?: string;
   assignedCats: Schema.Types.ObjectId[]; // Ref: Cat
+  user: Schema.Types.ObjectId; // Ref: User
 }
 
 const personSchema = new Schema<IPerson>({
@@ -48,7 +49,8 @@ const personSchema = new Schema<IPerson>({
     default: 'érdeklődő' 
   },
   notes: String,
-  assignedCats: [{ type: Schema.Types.ObjectId, ref: 'Cat' }]
+  assignedCats: [{ type: Schema.Types.ObjectId, ref: 'Cat' }],
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 
 export const Person = model<IPerson>('Person', personSchema);
